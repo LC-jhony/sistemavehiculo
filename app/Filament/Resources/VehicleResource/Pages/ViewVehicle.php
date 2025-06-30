@@ -46,7 +46,6 @@ class ViewVehicle extends ViewRecord
                     ]),
                 Infolists\Components\Section::make('Documentos del Vehiculo')
                     ->icon('bi-file-pdf-fill')
-
                     ->schema([
                         RepeatableEntry::make('documents')
                             ->columns(2)

@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DriverLicenseResource\Pages;
 use Hugomyb\FilamentMediaAction\Tables\Actions\MediaAction;
 use Asmit\FilamentUpload\Forms\Components\AdvancedFileUpload;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 
 class DriverLicenseResource extends Resource
 {
@@ -154,6 +155,10 @@ class DriverLicenseResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    FilamentExportBulkAction::make('export')
+                        ->defaultPageOrientation('landscape')
+                        ->pageOrientationFieldLabel('Page Orientation')
+
                 ]),
             ]);
     }
