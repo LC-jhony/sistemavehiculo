@@ -28,7 +28,6 @@ class DriverLicenseResource extends Resource
     {
         return $form
             ->schema([
-
                 Forms\Components\Section::make('Datos del Conductor')
                     ->description('Datos generales del chofer y documnetos')
                     ->schema([
@@ -104,8 +103,32 @@ class DriverLicenseResource extends Resource
                     ->label('Tipo de Licencia')
                     ->badge()
                     ->searchable(),
-                StatusColumn::make('status')
-                    ->label('Estado de Licencia'),
+                Tables\Columns\TextColumn::make('status_label')
+                    ->label('Estado')
+                    ->getStateUsing(function ($record) {
+                        $expirationDate = \Carbon\Carbon::parse($record->expiration_date);
+                        $today = now();
+
+                        return match (true) {
+                            $expirationDate->isPast() => 'Vencido',
+                            $expirationDate->diffInDays($today) <= 7 && $expirationDate->isFuture() => 'Crítico',
+                            $expirationDate->diffInDays($today) <= 30 && $expirationDate->isFuture() => 'Por vencer',
+                            default => 'Vigente'
+                        };
+                    })
+                    ->badge()
+                    ->color(function ($state) {
+                        return match ($state) {
+                            'Vigente' => 'success',
+                            'Por vencer' => 'warning',
+                            'Crítico' => 'gray',
+                            'Vencido' => 'danger',
+                            default => 'success',
+                        };
+                    })
+                    ->sortable(),
+                // StatusColumn::make('status')
+                //     ->label('Estado de Licencia'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -121,6 +144,7 @@ class DriverLicenseResource extends Resource
                     ->options([
                         'vigente' => 'Vigente',
                         'por-vencer' => 'Por vencer',
+                        'critico' => 'Crítico',
                         'vencido' => 'Vencido',
                     ])
                     ->query(function ($query, array $data) {
@@ -132,7 +156,8 @@ class DriverLicenseResource extends Resource
 
                         return match ($data['value']) {
                             'vigente' => $query->where('expiration_date', '>', $today->copy()->addDays(30)),
-                            'por-vencer' => $query->whereBetween('expiration_date', [$today, $today->copy()->addDays(30)]),
+                            'por-vencer' => $query->whereBetween('expiration_date', [$today->copy()->addDays(8), $today->copy()->addDays(30)]),
+                            'critico' => $query->whereBetween('expiration_date', [$today, $today->copy()->addDays(7)]),
                             'vencido' => $query->where('expiration_date', '<', $today),
                             default => $query,
                         };
@@ -158,6 +183,13 @@ class DriverLicenseResource extends Resource
                     FilamentExportBulkAction::make('export')
                         ->defaultPageOrientation('landscape')
                         ->pageOrientationFieldLabel('Page Orientation')
+                        ->formatStates([
+                            'status' => [
+                                'vigente' => 'Vigente',
+                                'por-vencer' => 'Por vencer',
+                                'vencido' => 'Vencido',
+                            ],
+                        ])
 
                 ]),
             ]);

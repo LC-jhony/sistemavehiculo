@@ -130,16 +130,16 @@
         },
         {
             "name": "asmit/filament-upload",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AsmitNepali/filament-upload.git",
-                "reference": "fa89fcb3b96b908ba14456a3eebdff9cfb38f48b"
+                "reference": "8ff53bda4ef22e87c6efbded0341e99e69363b54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AsmitNepali/filament-upload/zipball/fa89fcb3b96b908ba14456a3eebdff9cfb38f48b",
-                "reference": "fa89fcb3b96b908ba14456a3eebdff9cfb38f48b",
+                "url": "https://api.github.com/repos/AsmitNepali/filament-upload/zipball/8ff53bda4ef22e87c6efbded0341e99e69363b54",
+                "reference": "8ff53bda4ef22e87c6efbded0341e99e69363b54",
                 "shasum": ""
             },
             "require": {
@@ -171,9 +171,9 @@
             "description": "Filament PDF file upload and preview.",
             "support": {
                 "issues": "https://github.com/AsmitNepali/filament-upload/issues",
-                "source": "https://github.com/AsmitNepali/filament-upload/tree/v1.0.1"
+                "source": "https://github.com/AsmitNepali/filament-upload/tree/v1.0.2"
             },
-            "time": "2025-05-11T17:38:21+00:00"
+            "time": "2025-06-30T11:22:18+00:00"
         },
         {
             "name": "barryvdh/laravel-dompdf",

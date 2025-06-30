@@ -46,7 +46,6 @@ class ViewDriverLicense extends ViewRecord
                                         Infolists\Components\TextEntry::make('license_type')
                                             ->label('Tipo de Licencia')
                                             ->badge(),
-
                                     ]),
                                 Infolists\Components\Grid::make()
                                     ->columnSpan(3)
@@ -54,6 +53,7 @@ class ViewDriverLicense extends ViewRecord
                                         PdfViewerEntry::make('file')
                                             ->label('View the PDF')
                                             ->minHeight('40svh')
+                                            ->columnSpanFull()
                                     ]),
                             ]),
                     ]),
