@@ -6,10 +6,8 @@ use App\Filament\Resources\DriverLicenseResource;
 use Filament\Actions;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
-
 use Filament\Resources\Pages\ViewRecord;
 use Joaopaulolndev\FilamentPdfViewer\Infolists\Components\PdfViewerEntry;
-
 
 class ViewDriverLicense extends ViewRecord
 {
@@ -21,6 +19,7 @@ class ViewDriverLicense extends ViewRecord
             Actions\EditAction::make(),
         ];
     }
+
     public function infolist(Infolist $infolist): Infolist
     {
         return $infolist
@@ -38,7 +37,7 @@ class ViewDriverLicense extends ViewRecord
                                     ->schema([
                                         Infolists\Components\TextEntry::make('driver.full_name')
                                             ->label('Nombre')
-                                            ->getStateUsing(fn($record) => $record->driver->name . ' ' . $record->driver->last_paternal_name . ' ' . $record->driver->last_maternal_name),
+                                            ->getStateUsing(fn ($record) => $record->driver->name.' '.$record->driver->last_paternal_name.' '.$record->driver->last_maternal_name),
                                         Infolists\Components\TextEntry::make('license_number')
                                             ->label('Número de Licencia'),
                                         Infolists\Components\TextEntry::make('expiration_date')
@@ -53,7 +52,7 @@ class ViewDriverLicense extends ViewRecord
                                         PdfViewerEntry::make('file')
                                             ->label('View the PDF')
                                             ->minHeight('40svh')
-                                            ->columnSpanFull()
+                                            ->columnSpanFull(),
                                     ]),
                             ]),
                     ]),

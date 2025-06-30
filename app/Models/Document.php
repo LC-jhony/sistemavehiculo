@@ -11,6 +11,7 @@ class Document extends Model
         'type',
         'file',
     ];
+
     public function vehicle()
     {
         return $this->belongsTo(

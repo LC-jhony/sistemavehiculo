@@ -2,17 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Vehicle;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\VehicleResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\VehicleResource\RelationManagers;
+use App\Models\Vehicle;
 use Asmit\FilamentUpload\Forms\Components\AdvancedFileUpload;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class VehicleResource extends Resource
 {
@@ -42,6 +39,7 @@ class VehicleResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Toggle::make('status')
                     ->label('Estado')
+                    ->default(true)
                     ->required(),
 
                 Forms\Components\Section::make('Documentos')
@@ -53,16 +51,17 @@ class VehicleResource extends Resource
                             ->label('')
                             ->relationship()
                             ->schema([
-                                Forms\Components\TextInput::make('type'),
+                                Forms\Components\TextInput::make('type')
+                                    ->label('Tipo de Documento'),
                                 AdvancedFileUpload::make('file')
                                     ->label('Documento')
+                                    ->label('Documento')
                                     ->default(null)
-
                                     ->visibility('public')
                                     ->directory('DocumentsVehicle')
                                     ->acceptedFileTypes(['application/pdf']),
-                            ])
-                    ])
+                            ]),
+                    ]),
             ]);
     }
 

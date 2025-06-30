@@ -6,6 +6,14 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+.fi-topbar>nav {
+    @apply !bg-inherit ring-0 shadow-none;
+}
+
+.fi-sidebar-header {
+    @apply !bg-inherit ring-0 shadow-none;
+}
+
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';

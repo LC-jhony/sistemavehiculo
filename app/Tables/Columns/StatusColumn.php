@@ -8,12 +8,13 @@ use Filament\Tables\Columns\Column;
 class StatusColumn extends Column
 {
     protected string $view = 'tables.columns.status-column';
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->state(function ($record) {
-            if (!$record->expiration_date) {
+            if (! $record->expiration_date) {
                 return [
                     'status' => 'sin-fecha',
                     'label' => 'Sin fecha',
@@ -22,7 +23,7 @@ class StatusColumn extends Column
                     'bg_color' => 'bg-gray-100',
                     'text_color' => 'text-gray-800',
                     'dark_bg' => 'dark:bg-gray-800',
-                    'dark_text' => 'dark:text-gray-200'
+                    'dark_text' => 'dark:text-gray-200',
                 ];
             }
 
@@ -42,7 +43,7 @@ class StatusColumn extends Column
                     'dark_bg' => 'dark:bg-red-600',
                     'dark_text' => 'dark:text-white',
                     'days' => abs($daysUntilExpiration),
-                    'pulse' => true
+                    'pulse' => true,
                 ];
             } elseif ($daysUntilExpiration <= 7) {
                 // Crítico - Rojo/Naranja (vence en 7 días o menos)
@@ -56,7 +57,7 @@ class StatusColumn extends Column
                     'dark_bg' => 'dark:bg-orange-600',
                     'dark_text' => 'dark:text-white',
                     'days' => $daysUntilExpiration,
-                    'pulse' => true
+                    'pulse' => true,
                 ];
             } elseif ($daysUntilExpiration <= 30) {
                 // Por vencer - Amarillo
@@ -69,7 +70,7 @@ class StatusColumn extends Column
                     'text_color' => 'text-yellow-900',
                     'dark_bg' => 'dark:bg-yellow-500',
                     'dark_text' => 'dark:text-yellow-900',
-                    'days' => $daysUntilExpiration
+                    'days' => $daysUntilExpiration,
                 ];
             } elseif ($daysUntilExpiration <= 90) {
                 // Próximo a vencer - Azul
@@ -82,7 +83,7 @@ class StatusColumn extends Column
                     'text_color' => 'text-white',
                     'dark_bg' => 'dark:bg-blue-600',
                     'dark_text' => 'dark:text-white',
-                    'days' => $daysUntilExpiration
+                    'days' => $daysUntilExpiration,
                 ];
             } else {
                 // Vigente - Verde
@@ -95,7 +96,7 @@ class StatusColumn extends Column
                     'text_color' => 'text-white',
                     'dark_bg' => 'dark:bg-green-600',
                     'dark_text' => 'dark:text-white',
-                    'days' => $daysUntilExpiration
+                    'days' => $daysUntilExpiration,
                 ];
             }
         });

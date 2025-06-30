@@ -5,12 +5,11 @@ namespace App\Filament\Resources\VehicleResource\Pages;
 use App\Filament\Resources\VehicleResource;
 use Filament\Actions;
 use Filament\Infolists;
+use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\ViewRecord;
-use Filament\Infolists\Components\RepeatableEntry;
 use Illuminate\Support\Facades\Storage;
 use Joaopaulolndev\FilamentPdfViewer\Infolists\Components\PdfViewerEntry;
-
 
 class ViewVehicle extends ViewRecord
 {
@@ -22,6 +21,7 @@ class ViewVehicle extends ViewRecord
             Actions\EditAction::make(),
         ];
     }
+
     public function infolist(Infolist $infolist): Infolist
     {
         return $infolist
@@ -54,14 +54,14 @@ class ViewVehicle extends ViewRecord
                                     ->label('Tipo de Documento'),
                                 PdfViewerEntry::make('file')
                                     ->label('Archivo')
-                                    ->label('View the PDF')
+                                    ->label('Documento Adjunto')
                                     ->minHeight('40svh')
                                     ->fileUrl(function ($state, $record) {
                                         return Storage::url($state);
-                                    })
-                            ])
+                                    }),
+                            ]),
 
-                    ])
+                    ]),
             ]);
     }
 }

@@ -19,6 +19,7 @@ class ViewDriver extends ViewRecord
             Actions\EditAction::make(),
         ];
     }
+
     public function infolist(Infolist $infolist): Infolist
     {
         return $infolist

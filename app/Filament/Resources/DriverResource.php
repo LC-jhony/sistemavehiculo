@@ -2,27 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
+use App\Filament\Resources\DriverResource\Pages;
 use App\Models\Cargo;
 use App\Models\Driver;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Filament\Tables\Actions\ActionGroup;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\DriverResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\DriverResource\RelationManagers;
-use Hugomyb\FilamentMediaAction\Tables\Actions\MediaAction;
 use Asmit\FilamentUpload\Forms\Components\AdvancedFileUpload;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Table;
+use Hugomyb\FilamentMediaAction\Tables\Actions\MediaAction;
 
 class DriverResource extends Resource
 {
     protected static ?string $model = Driver::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?string $modelLabel = 'Conductore';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -93,7 +92,7 @@ class DriverResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('full_name')
                     ->label('Nombre Completo')
-                    ->getStateUsing(fn($record) => $record->name . ' ' . $record->last_paternal_name . ' ' . $record->last_maternal_name)
+                    ->getStateUsing(fn ($record) => $record->name.' '.$record->last_paternal_name.' '.$record->last_maternal_name)
                     ->searchable(['name', 'last_paternal_name', 'last_maternal_name'])
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dni')
@@ -124,11 +123,11 @@ class DriverResource extends Resource
             ->actions([
                 MediaAction::make('pdf')
                     ->label('')
-                    ->media(fn($record) => $record->file ? asset('storage/' . $record->file) : null)
+                    ->media(fn ($record) => $record->file ? asset('storage/'.$record->file) : null)
                     // ->iconButton()
                     ->icon('bi-file-pdf-fill')
                     ->color('danger')
-                    ->visible(fn($record) => ! empty($record->file)),
+                    ->visible(fn ($record) => ! empty($record->file)),
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
