@@ -181,8 +181,10 @@ class DriverLicenseResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                     FilamentExportBulkAction::make('export')
+                        ->label('Exportar Licencias') // Título del botón
                         ->defaultPageOrientation('landscape')
-                        ->pageOrientationFieldLabel('Page Orientation')
+                        // ->pageOrientationFieldLabel('Page Orientation')
+                        ->defaultFormat('xlsx')
                         ->formatStates([
                             'status' => [
                                 'vigente' => 'Vigente',
