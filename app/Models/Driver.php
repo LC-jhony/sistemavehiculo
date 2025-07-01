@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use App\Observers\DriverObserver;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+#[ObservedBy(DriverObserver::class)]
 class Driver extends Model
 {
+    use Notifiable;
     protected $fillable = [
         'name',
         'last_paternal_name',

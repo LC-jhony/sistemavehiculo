@@ -92,7 +92,7 @@ class DriverResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('full_name')
                     ->label('Nombre Completo')
-                    ->getStateUsing(fn ($record) => $record->name.' '.$record->last_paternal_name.' '.$record->last_maternal_name)
+                    ->getStateUsing(fn($record) => $record->name . ' ' . $record->last_paternal_name . ' ' . $record->last_maternal_name)
                     ->searchable(['name', 'last_paternal_name', 'last_maternal_name'])
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dni')
@@ -118,16 +118,27 @@ class DriverResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('cargo_id')
+                    ->label('Cargo')
+                    ->options(Cargo::where('status', true)->pluck('name', 'id'))
+                    ->searchable()
+                    ->native(false),
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Estado')
+                    ->options([
+                        '1' => 'Activo',
+                        '0' => 'Inactivo',
+                    ])
+                    ->native(false)
             ])
             ->actions([
                 MediaAction::make('pdf')
                     ->label('')
-                    ->media(fn ($record) => $record->file ? asset('storage/'.$record->file) : null)
+                    ->media(fn($record) => $record->file ? asset('storage/' . $record->file) : null)
                     // ->iconButton()
                     ->icon('bi-file-pdf-fill')
                     ->color('danger')
-                    ->visible(fn ($record) => ! empty($record->file)),
+                    ->visible(fn($record) => ! empty($record->file)),
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),

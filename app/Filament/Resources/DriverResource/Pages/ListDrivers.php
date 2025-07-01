@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\DriverResource\Pages;
 
+use App\Filament\Imports\DriverImporter;
 use App\Filament\Resources\DriverResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
@@ -13,7 +14,11 @@ class ListDrivers extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->icon('heroicon-o-squares-plus'),
+            Actions\ImportAction::make('import')
+                ->importer(DriverImporter::class)
+                ->icon('heroicon-o-arrow-up-tray')
         ];
     }
 }
