@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Observers\DriverObserver;
+use App\Models\DriverMineAssignment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -42,5 +43,23 @@ class Driver extends Model
             related: DriverLicense::class,
             foreignKey: 'driver_id',
         );
+    }
+    // Nuevas relaciones para minas
+    public function mineAssignments(): HasMany
+    {
+        return $this->hasMany(DriverMineAssignment::class);
+    }
+
+    public function currentMineAssignment(): HasMany
+    {
+        return $this->hasMany(DriverMineAssignment::class)
+            ->where('status', 'active')
+            ->whereDate('start_date', '<=', now())
+            ->whereDate('end_date', '>=', now());
+    }
+
+    public function getCurrentMineAttribute()
+    {
+        return $this->currentMineAssignment()->first()?->mine;
     }
 }

@@ -18,10 +18,14 @@ class DriverResource extends Resource
 {
     protected static ?string $model = Driver::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $modelLabel = 'Conductore';
 
+    protected static ?string $navigationGroup = 'Gestión de Personal';
+
+    protected static ?int $navigationSort = 1; // To control the order within the group
+    protected static ?string $navigationLabel = 'Conductores'; // Custom label for navigation
     public static function form(Form $form): Form
     {
         return $form
@@ -87,7 +91,7 @@ class DriverResource extends Resource
         return $table
             ->striped()
             ->paginated([5, 10, 25, 50, 100, 'all'])
-            ->defaultPaginationPageOption(10)
+            ->defaultPaginationPageOption(5)
             ->searchable()
             ->columns([
                 Tables\Columns\TextColumn::make('full_name')

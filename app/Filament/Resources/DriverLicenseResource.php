@@ -20,10 +20,10 @@ class DriverLicenseResource extends Resource
 {
     protected static ?string $model = DriverLicense::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-identification';
 
     protected static ?string $modelLabel = 'Licencia';
-
+    protected static ?string $navigationGroup = 'Gestión de Personal';
     public static function form(Form $form): Form
     {
         return $form
@@ -42,10 +42,10 @@ class DriverLicenseResource extends Resource
                                             ->label('Chofer')
                                             ->searchable()
                                             ->options(Driver::all()->pluck('name', 'id'))
-                                            ->getSearchResultsUsing(fn (string $search): array => Driver::where('dni', 'like', "%{$search}%")->limit(50)->get()->mapWithKeys(function ($driver) {
+                                            ->getSearchResultsUsing(fn(string $search): array => Driver::where('dni', 'like', "%{$search}%")->limit(50)->get()->mapWithKeys(function ($driver) {
                                                 return [$driver->id => "{$driver->name} {$driver->last_paternal_name} {$driver->last_maternal_name}"];
                                             })->toArray())
-                                            ->getOptionLabelsUsing(fn (array $values): array => Driver::whereIn('id', $values)->get()->mapWithKeys(function ($driver) {
+                                            ->getOptionLabelsUsing(fn(array $values): array => Driver::whereIn('id', $values)->get()->mapWithKeys(function ($driver) {
                                                 return [$driver->id => "{$driver->name} {$driver->last_paternal_name} {$driver->last_maternal_name}"];
                                             })->toArray())
                                             ->required(),
@@ -89,7 +89,7 @@ class DriverLicenseResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('driver.full_name')
                     ->label('Chofer')
-                    ->getStateUsing(fn ($record) => $record->driver->name.' '.$record->driver->last_paternal_name.' '.$record->driver->last_maternal_name)
+                    ->getStateUsing(fn($record) => $record->driver->name . ' ' . $record->driver->last_paternal_name . ' ' . $record->driver->last_maternal_name)
                     ->searchable(['drivers.name', 'drivers.last_paternal_name', 'drivers.last_maternal_name'])
                     ->sortable(),
                 Tables\Columns\TextColumn::make('license_number')
@@ -166,11 +166,11 @@ class DriverLicenseResource extends Resource
             ->actions([
                 MediaAction::make('pdf')
                     ->label('')
-                    ->media(fn ($record) => $record->file ? asset('storage/'.$record->file) : null)
+                    ->media(fn($record) => $record->file ? asset('storage/' . $record->file) : null)
                     // ->iconButton()
                     ->icon('bi-file-pdf-fill')
                     ->color('danger')
-                    ->visible(fn ($record) => ! empty($record->file)),
+                    ->visible(fn($record) => ! empty($record->file)),
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
