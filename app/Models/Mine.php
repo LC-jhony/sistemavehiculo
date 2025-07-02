@@ -29,6 +29,7 @@ class Mine extends Model
             DriverMineAssignment::class,
         )->where('status', 'Activo');
     }
+
     public function drivers(): HasMany
     {
         return $this->hasMany(

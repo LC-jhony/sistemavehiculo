@@ -54,6 +54,10 @@ class MineResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
+            ->paginated([5, 10, 25, 50, 100, 'all'])
+            ->defaultPaginationPageOption(5)
+            ->searchable()
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre')
@@ -65,10 +69,7 @@ class MineResource extends Resource
                     ->label('Estado')
                     ->boolean()
                     ->boolean(),
-                Tables\Columns\TextColumn::make('assignments_count')
-                    ->label('Conductores Asignados')
-                    ->counts('activeAssignments')
-                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Creado')
                     ->dateTime()
