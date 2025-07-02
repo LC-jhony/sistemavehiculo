@@ -49,35 +49,32 @@ class CreateDriverMineAssignment extends CreateRecord
      */
     protected function beforeCreate(): void
     {
-        // Verificar si existe cualquier asignación para el mismo conductor en el mismo período
-        $existingAssignment = DriverMineAssignment::where('driver_id', $this->data['driver_id'])
-            ->where('year', $this->data['year'])
-            ->where('month', $this->data['month'])
-            ->with(['driver', 'mine']) // Cargar relaciones para mostrar información detallada
-            ->first();
+        $data = $this->form->getState();
+        
+        // Validar conflictos de horarios
+        $this->validateScheduleConflicts($data);
+        
+        // Validar capacidad del vehículo
+        $this->validateVehicleCapacity($data);
+        
+        // Validar licencias del conductor
+        $this->validateDriverLicenses($data);
+    }
 
-        if ($existingAssignment) {
-            // Determinar el mensaje de estado basado en el estado de la asignación existente
-            $statusMessage = match ($existingAssignment->status) {
-                'Activo' => 'activa',
-                'Completedo' => 'completada', // Nota: Posible error tipográfico en 'Completedo'
-                'Cancelado' => 'cancelada',
-                default => 'existente'
-            };
-
-            // Obtener información detallada para el mensaje de error
-            $driverName = $existingAssignment->driver->full_name;
-            $mineName = $existingAssignment->mine->name;
-            $period = $existingAssignment->month_name . ' ' . $existingAssignment->year;
-
-            // Mostrar notificación de error con información específica
+    private function validateScheduleConflicts(array $data): void
+    {
+        $conflicts = DriverMineAssignment::where('driver_id', $data['driver_id'])
+            ->where('status', 'active')
+            ->whereBetween('start_date', [$data['start_date'], $data['end_date']])
+            ->orWhereBetween('end_date', [$data['start_date'], $data['end_date']])
+            ->exists();
+        
+        if ($conflicts) {
             Notification::make()
-                ->title('Error de Asignación')
-                ->body("El conductor {$driverName} ya tiene una asignación {$statusMessage} para la mina {$mineName} en el período {$period}. Debe modificar o eliminar la asignación existente antes de crear una nueva.")
-                ->danger()
+                ->title('Conflicto de Horarios')
+                ->body('El conductor ya tiene asignaciones en el período seleccionado.')
+                ->warning()
                 ->send();
-
-            // Detener el proceso de creación
             $this->halt();
         }
     }

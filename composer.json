@@ -9,6 +9,7 @@
         "php": "^8.2",
         "alperenersoy/filament-export": "^3.0",
         "asmit/filament-upload": "^1.0",
+        "bezhansalleh/filament-shield": "^3.3",
         "davidhsianturi/blade-bootstrap-icons": "^2.1",
         "filafly/filament-font-awesome-icons": "^1.0",
         "filament/filament": "^3.3",
