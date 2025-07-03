@@ -44,6 +44,13 @@ class Driver extends Model
             foreignKey: 'driver_id',
         );
     }
+    public function mine(): BelongsTo
+    {
+        return $this->belongsTo(
+            related: Mine::class,
+            foreignKey: 'mina_id',
+        );
+    }
     // Nuevas relaciones para minas
     public function mineAssignments(): HasMany
     {

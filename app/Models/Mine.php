@@ -36,4 +36,10 @@ class Mine extends Model
             DriverMineAssignment::class,
         )->where('status', 'Activo');
     }
+    public function users(): HasMany
+    {
+        return $this->hasMany(
+            User::class,
+        );
+    }
 }

@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'mina_id',
     ];
 
     /**
@@ -35,6 +36,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function mina()
+    {
+        return $this->belongsTo(Mine::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -46,5 +52,16 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    /**
+     * Scope para filtrar por mina del usuario autenticado
+     */
+    public function scopeForCurrentUserMina($query)
+    {
+        $user = auth()->user();
+        if ($user && $user->mina_id) {
+            return $query->where('mina_id', $user->mina_id);
+        }
+        return $query;
     }
 }

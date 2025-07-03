@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Table;
 use Hugomyb\FilamentMediaAction\Tables\Actions\MediaAction;
+use Illuminate\Database\Eloquent\Builder;
 
 class DriverResource extends Resource
 {
@@ -26,6 +27,23 @@ class DriverResource extends Resource
 
     protected static ?int $navigationSort = 1; // To control the order within the group
     protected static ?string $navigationLabel = 'Conductores'; // Custom label for navigation
+    /**
+     * Filtrar los registros según la mina del usuario autenticado
+     */
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user = auth()->user();
+        // Si el usuario tiene una mina asignada, filtrar por esa mina
+        if ($user && $user->mina_id) {
+            $query->where('mina_id', $user->mina_id);
+        }
+        // Si el usuario es super admin, puede ver todos los drivers
+        if ($user && $user->hasRole('super_admin')) {
+            return $query; // Sin filtro para super admin
+        }
+        return $query;
+    }
 
     public static function form(Form $form): Form
     {
@@ -123,6 +141,10 @@ class DriverResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('mina_id')
+                    ->relationship('mina', 'nombre')
+                    ->label('Mina')
+                    ->visible(fn() => auth()->user()?->hasRole('super_admin')),
                 Tables\Filters\SelectFilter::make('cargo_id')
                     ->label('Cargo')
                     ->options(Cargo::where('status', true)->pluck('name', 'id'))
