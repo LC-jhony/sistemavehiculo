@@ -23,7 +23,8 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?string $navigationGroup = 'Administración';
+    protected static ?string $navigationGroup = 'Roles y Permisos';
+    protected static ?string $modelLabel = 'Usuario';
 
     public static function form(Form $form): Form
     {
@@ -47,6 +48,11 @@ class UserResource extends Resource
                             ->dehydrateStateUsing(fn($state) => Hash::make($state))
                             ->visible(fn($livewire) => $livewire instanceof CreateUser)
                             ->rule(Password::default()),
+
+                        Forms\Components\CheckboxList::make('roles')
+                            ->relationship('roles', 'name')
+                            ->searchable()
+                            ->columns(6),
 
                     ]),
                 Forms\Components\Section::make('User New Password')
@@ -77,6 +83,9 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('roles.name')
+                    ->label('Roles')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -85,10 +94,6 @@ class UserResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('theme')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('theme_color')
-                    ->searchable(),
             ])
             ->filters([
                 //

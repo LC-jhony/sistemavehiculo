@@ -170,7 +170,7 @@ class DriverLicenseResource extends Resource
                     // ->iconButton()
                     ->icon('bi-file-pdf-fill')
                     ->color('danger')
-                    ->visible(fn($record) => ! empty($record->file)),
+                    ->visible(fn($record) => !empty($record->file) && auth()->user()->hasAnyRole(['super_admin', 'admin', 'user'])),
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),

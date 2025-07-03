@@ -26,6 +26,7 @@ class DriverResource extends Resource
 
     protected static ?int $navigationSort = 1; // To control the order within the group
     protected static ?string $navigationLabel = 'Conductores'; // Custom label for navigation
+
     public static function form(Form $form): Form
     {
         return $form
@@ -142,7 +143,8 @@ class DriverResource extends Resource
                     // ->iconButton()
                     ->icon('bi-file-pdf-fill')
                     ->color('danger')
-                    ->visible(fn($record) => ! empty($record->file)),
+                    //->visible(fn($record) => ! empty($record->file)),
+                    ->visible(fn($record) => !empty($record->file) && auth()->user()->hasAnyRole(['super_admin', 'admin', 'user'])),
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
